@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage ("checkout from GIT") {
             steps {
-                git branch: 'main', credentialsId: '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', url: 'https://github.com/RahulllThakur/tff'
+                git branch: 'main', credentialsId: 'ghp_', url: 'https://github.com/RahulllThakur/tff'
             }
         }
         stage ("terraform init") {
