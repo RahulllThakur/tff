@@ -1,46 +1,26 @@
-resource "aws_vpc" "demo" {
-  cidr_block       = "70.70.0.0/16"
-  instance_tenancy = "default"
-
-  tags = {
-    Name = "demo-vpc"
-  }
+provider "google" {
+  project = "myfirstproject-315506" 
+  region  = "us-central1"
+  zone    = "us-central1-c"
 }
-resource "aws_subnet" "demo1" {
-  vpc_id     = aws_vpc.demo.id
-  cidr_block = "70.70.1.0/28"
+resource "google_compute_instance" "vm_instance" {
+  name         = "Jenkins-instance"
+  machine_type = "f1-micro"
 
-  tags = {
-    Name = "subnet1"
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-9"
+    }
   }
+
+ network_interface {
+    network = "default"
+
+    access_config {
+      // Ephemeral IP
+    }
+  }
+
+  #  metadata_startup_script = "sudo apt-get -y update && sudo apt-get -y install openjdk-8-jdk && sudo wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add - && sudo echo "deb https://pkg.jenkins.io/debian-stable binary/" >> /etc/apt/sources.list && sudo apt-get -y update && sudo apt-get -y install jenkins "
+
 }
-resource "aws_subnet" "demo2" {
-  vpc_id     = aws_vpc.demo.id
-  cidr_block = "70.70.1.16/28"
-
-  tags = {
-    Name = "subnet2"
-  }
-}
-resource "aws_internet_gateway" "massgw" {
-  vpc_id = aws_vpc.demo.id
-
-  tags = {
-    Name = "mass"
-  }
-}
-resource "aws_route_table" "Pu_RT" {
-  vpc_id = aws_vpc.demo.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.massgw.id
-  }
-
-  tags = {
-    Name = "massian"
-  }
-}
-resource "aws_route_table" "Private-RT" {
-  vpc_id = aws_vpc.demo.id
-  }
