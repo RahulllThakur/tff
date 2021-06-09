@@ -4,7 +4,7 @@ provider "google" {
   zone    = "us-central1-c"
 }
 resource "google_compute_instance" "vm_instance" {
-  name         = "Jenkins-instance"
+  name         = "jenkinsdemoinstance"
   machine_type = "f1-micro"
 
   boot_disk {
